@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:to_dont_list/objects/books.dart';
 import 'package:to_dont_list/widgets/book_list_item.dart';
 import 'package:to_dont_list/widgets/book_dialog.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BookList extends StatefulWidget {
   const BookList({super.key});
@@ -48,8 +49,13 @@ class _BookListState extends State<BookList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Book List'),
-        ),
+          title: Text(
+            'Book List',
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
+          centerTitle: true,
+      ),
+
         body: ListView(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           children: books.map((book) {
@@ -60,21 +66,38 @@ class _BookListState extends State<BookList> {
             );
           }).toList(),
         ),
+        //changed color of the action button on the bottom.
         floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             onPressed: () {
               showDialog(
                   context: context,
                   builder: (_) {
                     return BookDialog(onListAdded: _handleNewBook);
                   });
-            }));
+            },
+            child: const Icon(Icons.add)));
   }
 }
-
+//added color and text themes
 void main() {
-  runApp(const MaterialApp(
-    title: 'Book List',
-    home: BookList(),
-  ));
+  runApp(MaterialApp(
+
+      title: 'Book List',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.black,
+          primary: const Color.fromARGB(255, 97, 153, 217),
+          secondary: const Color.fromARGB(255, 115, 209, 118),
+          tertiary: const Color.fromARGB(255, 210, 28, 70),
+        ),
+        useMaterial3: true,
+        textTheme: TextTheme(
+          headlineLarge: GoogleFonts.ebGaramond(fontSize: 40, fontWeight: FontWeight.bold,),
+          headlineMedium: GoogleFonts.ebGaramond(fontSize: 30, fontWeight: FontWeight.bold,),
+          headlineSmall: GoogleFonts.ebGaramond(fontSize: 20, fontWeight: FontWeight.normal,),
+        ),
+      ),
+      home: const BookList(),
+    ));
 }
